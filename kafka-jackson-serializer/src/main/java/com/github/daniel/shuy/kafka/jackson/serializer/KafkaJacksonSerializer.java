@@ -12,10 +12,10 @@ import org.apache.kafka.common.serialization.Serializer;
  * @param <T> Type to be serialized from.
  */
 public class KafkaJacksonSerializer<T> implements Serializer<T> {
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper mapper;
 
-    public KafkaJacksonSerializer(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public KafkaJacksonSerializer(ObjectMapper mapper) {
+        this.mapper = mapper;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class KafkaJacksonSerializer<T> implements Serializer<T> {
     @Override
     public byte[] serialize(String topic, T data) {
         try {
-            return objectMapper.writeValueAsBytes(data);
+            return mapper.writeValueAsBytes(data);
         } catch (JsonProcessingException | RuntimeException e) {
             throw new SerializationException("Error serializing to JSON with Jackson", e);
         }

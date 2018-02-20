@@ -12,11 +12,11 @@ import org.apache.kafka.common.serialization.Deserializer;
  * @param <T> Type to be deserialized into.
  */
 public class KafkaJacksonDeserializer<T> implements Deserializer<T> {
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper mapper;
     private final Class<T> clazz;
 
-    public KafkaJacksonDeserializer(ObjectMapper objectMapper, Class<T> clazz) {
-        this.objectMapper = objectMapper;
+    public KafkaJacksonDeserializer(ObjectMapper mapper, Class<T> clazz) {
+        this.mapper = mapper;
         this.clazz = clazz;
     }
 
@@ -27,7 +27,7 @@ public class KafkaJacksonDeserializer<T> implements Deserializer<T> {
     @Override
     public T deserialize(String topic, byte[] data) {
         try {
-            return objectMapper.readValue(data, clazz);
+            return mapper.readValue(data, clazz);
         } catch (IOException | RuntimeException e) {
             throw new SerializationException("Error deserializing from JSON with Jackson", e);
         }
