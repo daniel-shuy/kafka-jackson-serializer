@@ -14,6 +14,12 @@ import org.apache.kafka.common.serialization.Serializer;
 public class KafkaJacksonSerializer<T> implements Serializer<T> {
     private final ObjectMapper mapper;
 
+    /**
+     * Returns a new instance of {@link KafkaJacksonSerializer}.
+     * 
+     * @param mapper 
+     *                  The Jackson {@link ObjectMapper}.
+     */
     public KafkaJacksonSerializer(ObjectMapper mapper) {
         this.mapper = mapper;
     }

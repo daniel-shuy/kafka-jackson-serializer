@@ -15,6 +15,14 @@ public class KafkaJacksonDeserializer<T> implements Deserializer<T> {
     private final ObjectMapper mapper;
     private final Class<T> clazz;
 
+    /**
+     * Returns a new instance of {@link KafkaJacksonDeserializer}.
+     * 
+     * @param mapper 
+     *                  The Jackson {@link ObjectMapper}.
+     * @param clazz 
+     *                  Class to be deserialized into.
+     */
     public KafkaJacksonDeserializer(ObjectMapper mapper, Class<T> clazz) {
         this.mapper = mapper;
         this.clazz = clazz;
