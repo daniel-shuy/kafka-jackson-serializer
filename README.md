@@ -18,6 +18,7 @@ Add the following to your Maven dependency list:
 </dependency>
 ```
 
+### Serializer
 ```java
 ObjectMapper mapper = new ObjectMapper();
 // mapper.configure(..., ...);
@@ -28,4 +29,17 @@ Properties props = new Properties();
 Producer<String, MyValue> producer = new KafkaProducer<>(props,
     new StringSerializer(),
     new KafkaJacksonSerializer(mapper));
+```
+
+### Deserializer
+```java
+ObjectMapper mapper = new ObjectMapper();
+// mapper.configure(..., ...);
+
+Properties props = new Properties();
+// props.put(..., ...);
+
+Consumer<String, MyValue> consumer = new KafkaConsumer<>(props,
+    new StringDeserializer(),
+    new KafkaJacksonDeserializer(mapper, MyValue.class));
 ```
