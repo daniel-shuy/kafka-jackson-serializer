@@ -30,6 +30,10 @@ public class KafkaJacksonSerializer<T> implements Serializer<T> {
 
     @Override
     public byte[] serialize(String topic, T data) {
+        if (data == null) {
+            return null;
+        }
+
         try {
             return mapper.writeValueAsBytes(data);
         } catch (JsonProcessingException | RuntimeException e) {
