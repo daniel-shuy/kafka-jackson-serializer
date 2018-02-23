@@ -31,7 +31,7 @@ class KafkaJacksonSerializerTest {
 
     private <T> void serialize(KafkaHelper kafkaHelper, T input, Class<T> clazz) {
         Serializer<T> serializer = new KafkaJacksonSerializer<>(MAPPER);
-        
+
         try (
             KafkaProducer<T, T> producer = kafkaHelper.createProducer(
                     serializer,
