@@ -56,21 +56,31 @@ class KafkaJacksonSerializerTest {
                     .forEach(record -> {
                         byte[] outputKeyData = record.key();
                         T outputKey;
-                        try {
-                            outputKey = MAPPER.readValue(outputKeyData, clazz);
-                        } catch (IOException e) {
-                            Assertions.fail(e);
-                            return;
+                        if (outputKeyData == null) {
+                            outputKey = null;
+                        }
+                        else {
+                            try {
+                                outputKey = MAPPER.readValue(outputKeyData, clazz);
+                            } catch (IOException e) {
+                                Assertions.fail(e);
+                                return;
+                            }
                         }
                         Assertions.assertEquals(outputKey, input);
 
                         byte[] outputValueData = record.value();
                         T outputValue;
-                        try {
-                            outputValue = MAPPER.readValue(outputValueData, clazz);
-                        } catch (IOException e) {
-                            Assertions.fail(e);
-                            return;
+                        if (outputValueData == null) {
+                            outputValue = null;
+                        }
+                        else {
+                            try {
+                                outputValue = MAPPER.readValue(outputValueData, clazz);
+                            } catch (IOException e) {
+                                Assertions.fail(e);
+                                return;
+                            }
                         }
                         Assertions.assertEquals(outputValue, input);
                     });
