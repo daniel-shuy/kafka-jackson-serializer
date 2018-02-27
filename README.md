@@ -29,6 +29,8 @@ Properties props = new Properties();
 Producer<String, MyValue> producer = new KafkaProducer<>(props,
     new StringSerializer(),
     new KafkaJacksonSerializer(mapper));
+
+producer.send("FooBar", new MyValue());
 ```
 
 ### Deserializer
@@ -42,4 +44,15 @@ Properties props = new Properties();
 Consumer<String, MyValue> consumer = new KafkaConsumer<>(props,
     new StringDeserializer(),
     new KafkaJacksonDeserializer(mapper, MyValue.class));
+
+consumer.subscribe("topic");
+ConsumerRecords<String, MyValue> records = consumer.poll(100);
+
+StreamSupport.stream(records.spliterator(), false)
+        .forEach(record -> {
+            String key = record.key();
+            MyValue value = record.value();
+
+            // ...
+        });
 ```
