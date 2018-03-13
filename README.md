@@ -18,7 +18,7 @@ Add the following to your Maven dependency list:
 </dependency>
 ```
 
-### Serializer
+### Kafka Producer
 ```java
 ObjectMapper mapper = new ObjectMapper();
 // mapper.configure(..., ...);
@@ -30,10 +30,10 @@ Producer<String, MyValue> producer = new KafkaProducer<>(props,
     new StringSerializer(),
     new KafkaJacksonSerializer(mapper));
 
-producer.send("FooBar", new MyValue());
+producer.send(new ProducerRecord<>("topic", new MyValue()));
 ```
 
-### Deserializer
+### Kafka Consumer
 ```java
 ObjectMapper mapper = new ObjectMapper();
 // mapper.configure(..., ...);
@@ -48,11 +48,39 @@ Consumer<String, MyValue> consumer = new KafkaConsumer<>(props,
 consumer.subscribe("topic");
 ConsumerRecords<String, MyValue> records = consumer.poll(100);
 
-StreamSupport.stream(records.spliterator(), false)
-        .forEach(record -> {
-            String key = record.key();
-            MyValue value = record.value();
+records.forEach(record -> {
+    String key = record.key();
+    MyValue value = record.value();
 
-            // ...
-        });
+    // ...
+});
+```
+
+### Kafka Streams
+```java
+ObjectMapper mapper = new ObjectMapper();
+// mapper.configure(..., ...);
+
+Serde<String> stringSerde = Serdes.String();
+Serde<MyValue> myValueSerde = Serdes.serdeFrom(
+        new KafkaJacksonSerializer(mapper), 
+        new KafkaJacksonDeserializer(mapper, MyValue.class));
+
+Properties config = new Properties();
+// config.put(..., ...);
+
+StreamsBuilder builder = new StreamsBuilder();
+KStream<String, MyValue> myValues = builder.stream("input_topic", Consumed.with(stringSerde, myValueSerde));
+KStream<String, MyValue> filteredMyValues = myValues.filter((key, value) -> {
+    // ...
+});
+filteredMyValues.to("output_topic", Produced.with(stringSerde, myValueSerde));
+
+Topology topology = builder.build();
+KafkaStreams streams = new KafkaStreams(topology, config);
+streams.setUncaughtExceptionHandler((thread, throwable) -> {
+    // ...
+});
+Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+streams.start();
 ```
