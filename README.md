@@ -1,4 +1,6 @@
 # kafka-jackson-serializer
+**This project is no longer being maintained (however, the released artifacts will still remain in Maven Central). Use [spring-kafka](http://projects.spring.io/spring-kafka/)'s [JsonSerializer](https://docs.spring.io/spring-kafka/api/org/springframework/kafka/support/serializer/JsonSerializer.html)/[JsonDeserializer](https://docs.spring.io/spring-kafka/api/org/springframework/kafka/support/serializer/JsonDeserializer.html)/[JsonSerde](https://docs.spring.io/spring-kafka/api/org/springframework/kafka/support/serializer/JsonSerde.html) instead.**
+
 Serializer/Deserializer for Kafka that uses Jackson to marshall/unmarshall Objects to/from JSON
 
 ## Requirements
