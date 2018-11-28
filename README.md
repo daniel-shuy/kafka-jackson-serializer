@@ -19,6 +19,22 @@ Add the following to your Maven dependency list:
     <version>0.1.2</version>
 </dependency>
 ```
+Override the `kafka-client` dependency version with the version of Kafka you wish to use:
+```
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <version>1.1.1</version>
+</dependency>
+```
+Override the `jackson-databind` dependency version with the version of Jackson you wish to use:
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.7</version>
+</dependency>
+```
 
 ### Kafka Producer
 ```java
